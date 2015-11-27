@@ -1,16 +1,9 @@
-﻿var twilio = require('twilio');
+﻿var express = require('express');
+var router = express.Router();
+var twilio = require('twilio');
 
-/*
- * GET: '/'
- */
-exports.index = function (request, response) {
-    response.render('index');
-};
-
-/*
- * POST: '/ivr/welcome'
- */
-exports.welcome = function (request, response) {
+// POST: '/ivr/welcome'
+router.post('/welcome', twilio.webhook({ validate: false }), function (request, response) {
     var twiml = new twilio.TwimlResponse();
     twiml.gather({
         action: "/ivr/welcome",
@@ -20,12 +13,10 @@ exports.welcome = function (request, response) {
         node.play("http://howtodocs.s3.amazonaws.com/et-phone.mp3", { loop: 3 });
     });
     response.send(twiml);
-};
+});
 
-/*
- * POST: '/ivr/menu'
- */
-exports.menu = function (request, response) {
+// POST: '/ivr/menu'
+router.post('/menu', twilio.webhook({ validate: false }), function (request, response) {
     var selectedOption = request.body.Digits;
     var optionActions = {
         "1": giveExtractionPointInstructions,
@@ -38,12 +29,10 @@ exports.menu = function (request, response) {
         response.send(twiml);
     }
     response.send(redirectWelcome());
-};
+});
 
-/*
- * POST: '/ivr/planets'
- */
-exports.planets = function (request, response) {
+// POST: '/ivr/planets'
+router.post('/planets', twilio.webhook({ validate: false }), function (request, response) {
     var selectedOption = request.body.Digits;
     var optionActions = {
         "2": "+12024173378",
@@ -57,7 +46,7 @@ exports.planets = function (request, response) {
         response.send(twiml);
     }
     response.send(redirectWelcome());
-};
+});
 
 var giveExtractionPointInstructions = function (twiml) {
     twiml.say("To get to your extraction point, get on your bike and go down " +
@@ -93,3 +82,6 @@ var redirectWelcome = function () {
     twiml.redirect("/ivr/welcome");
     return twiml;
 }
+
+
+module.exports = router;
