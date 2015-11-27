@@ -4,12 +4,13 @@
   "description": "ivr-phone-tree-node",
   "main": "app.js",
   "author": {
-    "name": "neb",
-    "email": ""
+    "name": "Omar García",
+    "email": "neb.trx@gmail.com"
   },
   "dependencies": {
     "express": "3.4.4",
     "jade": "*",
-    "stylus": "*"
+    "stylus": "*",
+    "twilio": "^2.5.2"
   }
 }
