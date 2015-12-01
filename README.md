@@ -23,7 +23,7 @@ To run the app locally, clone this repository and `cd` into its directory. Then:
     ```
     node .
     ```
-    Alternatively you might also consider using [nodemon](https://github.com/remy/nodemon)for this. It works just like 
+    Alternatively you might also consider using [nodemon](https://github.com/remy/nodemon) for this. It works just like 
     the node command, but automatically restarts your application when you change any source code files.
     
     ```
@@ -38,7 +38,7 @@ To run the app locally, clone this repository and `cd` into its directory. Then:
     ```
     
 1. Provision a number under the [Twilio's Manage Numbers](https://www.twilio.com/user/account/phone-numbers/incoming) 
-page on your account. Set the voice URL for the number to http://<your-ngrok-subdomain>.ngrok.io/ivr/welcome
+page on your account. Set the voice URL for the number to http://[your-ngrok-subdomain].ngrok.io/ivr/welcome
 
 That's it
 
