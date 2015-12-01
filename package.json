@@ -1,16 +1,28 @@
 {
   "name": "ivr-phone-tree-node",
   "version": "1.0.0",
-  "private": true,
   "scripts": {
     "start": "node index.js",
     "test": "export NODE_ENV=test && mocha tests"
   },
-  "description": "ivr-phone-tree-node",
+  "description": "Create an IVR phone tree with Python and Twilio.",
   "author": {
     "name": "Omar Ahmed",
     "email": "neb.trx@gmail.com"
   },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TwilioDevEd/ivr-phone-tree-node"
+  },
+  "keywords": [
+    "node",
+    "ivr",
+    "twilio",
+    "express",
+    "twiml",
+    "webhooks"
+  ],
   "dependencies": {
     "body-parser": "~1.8.1",
     "cookie-parser": "~1.3.3",
