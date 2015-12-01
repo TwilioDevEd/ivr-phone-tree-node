@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node server.js",
-    "test": "export NODE_ENV=test && mocha test"
+    "start": "node index.js",
+    "test": "export NODE_ENV=test && mocha tests"
   },
   "description": "ivr-phone-tree-node",
   "author": {
