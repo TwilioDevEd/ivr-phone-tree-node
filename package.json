@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node index.js",
-    "test": "export NODE_ENV=test && mocha tests"
+    "test": "export NODE_ENV=test && mocha test"
   },
   "description": "Create an IVR phone tree with Python and Twilio.",
   "author": {
@@ -40,5 +40,8 @@
     "mocha": "^2.3.4",
     "server-destroy": "^1.0.1",
     "supertest": "^1.1.0"
+  },
+  "engines": {
+    "node": ">=0.12.2"
   }
 }
