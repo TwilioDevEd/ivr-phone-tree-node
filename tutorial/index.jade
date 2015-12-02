@@ -1,0 +1,179 @@
+.chapter(data-title='IVR Phone Tree')
+  .step(data-title='Introduction', data-file='app.js')
+    :markdown
+      ## About this application
+
+      ![Extra Terrestrial Phone Home
+      Service](http://howtodocs.s3.amazonaws.com/logo-et-phone2.png)
+
+      This Node.js [Express](//expressjs.com/en/index.html) sample application is
+      modeled after a typical call center experience, but with more [Reese's
+      Pieces](https://en.wikipedia.org/wiki/Reese%27s_Pieces#ET:_The_Extra-
+      Terrestrial).
+
+      Stranded aliens can call a phone number and receive instructions on how
+      to get out of earth safely, or call their home planet
+      directly[.](http://bit.ly/asogi) In this tutorial, we'll show you the
+      key bits of code to make this work.
+
+      To run this sample app yourself, [download the code and follow the
+      instructions on GitHub](https://github.com/TwilioDevEd/ivr-phone-tree-
+      node).
+
+      Let's get started! Click the right arrow above to move to the next step
+      of the tutorial.
+
+      ---
+
+      **See Also:**
+      * [Getting Started with Express](//expressjs.com/en/starter/installing.html)
+      * [TwiML Responses](//www.twilio.com/docs/api/twiml/your_response)
+      * [Twilio Module for Node,js](//www.twilio.com/blog/2013/03/introducing-the-twilio-module-for-node-js.html)
+      * [TwiML Creation with Twilio-Node helper library](//twilio.github.io/twilio-node/#twimlBasic)
+
+
+  .step(data-title='Respond a Phone Call', data-file='app.js')
+    :markdown
+      ## Respond to the Phone Call
+
+      To initiate the phone tree, we need to configure one of our Twilio
+      numbers to send our web application an HTTP request when we
+      get an incoming call.
+
+      [Click on one of your numbers](/user/account/phone-numbers/incoming) and
+      configure the Voice URL to point to our app. In our code the route
+      will be `/ivr/welcome`.
+
+      ![Configuring a Twilio Number](//s3.amazonaws.com/howtodocs/number-
+      config.png)
+
+      ---
+
+      **See Also:**
+      * [Configuring Twilio Numbers for Voice](/help/faq/voice/how-do-i-assign-my-twilio-number-to-my-voice-application)
+      * [Using ngrok to test your Twilio webhooks locally](https://www.twilio.com/blog/2013/10/test-your-webhooks-locally-with-ngrok.html)
+
+
+  .step(data-title='Respond to Twilio request', data-file='routes/ivr.js')
+    :markdown
+      ## Respond to the Twilio request with TwiML
+
+      Our Twilio number is now configured to [send HTTP
+      requests](https://www.twilio.com/docs/api/twiml/twilio_request) to this
+      controller method on any incoming voice calls. Our app responds with
+      [TwiML](https://www.twilio.com/docs/api/twiml) to tell Twilio what to do
+      in response to the message.
+
+      In this case we tell Twilio to
+      [`Gather`](https://www.twilio.com/docs/api/twiml/gather) the input from
+      the caller and we [`Play`](https://www.twilio.com/docs/api/twiml/play) a
+      welcome message.
+
+      You may have noted the second argument we're passing after the URI segment
+      in every route definition, e.g.:
+
+      ```
+      router.post('/welcome', twilio.webhook({validate: false}), function (request, response) {
+          ...
+      });
+      ```
+      That `twilio.webhook({validate: false})` call refers to [Twilio module’s built-in
+      Express middleware](//www.twilio.com/blog/2014/01/secure-your-nodejs-webhooks-with-middleware-for-express-middleware.html)
+      , which makes slightly nicer to send back TwiML among other
+      purposes, such as Twilio request validation.
+
+      ---
+
+      **See Also:**
+      * [Gather attributes](https://www.twilio.com/docs/api/twiml/gather#attributes)
+      * [Play 'loop' attribute](https://www.twilio.com/docs/api/twiml/play#attributes-loop)
+      * [Using Express middleware](http://expressjs.com/en/guide/using-middleware.html#middleware.router)
+
+  .step(data-title='Gather user input', data-file='routes/ivr.js', data-highlight='8-14')
+    :markdown
+      ## Where to send the caller's input
+
+      The *gather's* `action` parameter takes an absolute or relative URL as a
+      value - in our case, the `menu` endpoint.
+
+      When the caller has finished entering digits Twilio will make a
+      GET or POST request to this URL including a
+      [`Digits`](https://www.twilio.com/docs/api/twiml/gather#attributes-action-parameters) parameter with the number our caller chose.
+
+      After making this request, Twilio will continue the current call using
+      the TwiML received in your response. Any TwiML verbs occuring after a `<Gather>`
+      are unreachable, unless the caller enters no digits.
+
+      ---
+
+      **See Also:**
+      * [Twilio Request parameters](https://www.twilio.com/docs/api/twiml/twilio_request#synchronous-request-parameters)
+
+
+  .step(data-title='IVR Menu', data-file='routes/ivr.js', data-highlight='18-32, 51-77')
+    :markdown
+      ## The Main Menu: Process the caller's selection
+
+      The route `/ivr/menu` handles processing the caller's input.
+
+      If our caller chooses '1' for directions, we use method defined
+      below, [`giveExtractionPointInstructions`](//github.com/TwilioDevEd/ivr-phone-tree-node/blob/c0b1beaa37a962550b8b7c0586b7f52a67b02e00/routes/ivr.js#L51-L63),
+      to respond with TwiML that will
+      [`Say`](https://www.twilio.com/docs/api/twiml/say) directions to our
+      caller's extraction point.
+
+      If the caller chooses '2' to call her home planet, then we need to
+      gather more input from her. We wrote another method to handle this,
+      [`listPlanets`](//github.com/TwilioDevEd/ivr-phone-tree-node/blob/c0b1beaa37a962550b8b7c0586b7f52a67b02e00/routes/ivr.js#L65-L77),
+      which we'll cover in the next step.
+
+      If the caller enters anything else we respond with a TwiML
+      [`Redirect`](https://www.twilio.com/docs/api/twiml/redirect) to the main
+      menu.
+
+      ---
+
+      **See Also:**
+      * [The TwiML Hangup verb](https://www.twilio.com/docs/api/twiml/hangup)
+      * [TwiMl Say: Language Options](https://www.twilio.com/docs/api/twiml/say#attributes-alice)
+
+
+  .step(data-title='The Planet Directory', data-file='routes/ivr.js', data-highlight='34-49')
+    :markdown
+      ## The Planet Directory: Collect more input from the user
+
+      If our caller chooses to call her home planet we will tell her the planet
+      directory. This is akin to a typical "company directory" feature of
+      most IVRs.
+
+      In our TwiML response we again use a `Gather` verb to receive our caller's
+      input. The `action` verb points this time to the `planets` route, which
+      will switch our response based on what the caller chooses.
+
+      The TwiML response we return for that route just uses a
+      [`Dial`](https://www.twilio.com/docs/api/twiml/dial) verb with the
+      appropriate phone number to connect our caller to her home planet.
+
+  .step
+    :markdown
+      ## Where to next?
+
+      That's it! We've just implemented an IVR phone tree that will delight
+      and serve your customers.
+
+      If you're a Node.js|Express developer working with Twilio,
+      you might want to check out these other tutorials:
+
+      [**Account Verification**](//www.twilio.com/docs/tutorials/walkthrough/account-verification/node/express)
+
+      Use Twilio and Twilio-powered Authy to implement account verification at the point of registration.
+
+      [**Two-Factor Authentication with Authy**](//www.twilio.com/docs/tutorials/walkthrough/two-factor-authentication/node/express)
+
+      Use Twilio and Twilio-powered Authy OneTouch to implement two-factor authentication (2FA) in your web app
+
+      ### Did this help?
+
+      Thanks for checking out this tutorial! If you have any feedback to share
+      with us, we'd love to hear it. Tweet
+      [@twilio](http://twitter.com/twilio) to let us know what you think.
