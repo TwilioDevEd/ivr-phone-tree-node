@@ -116,8 +116,7 @@
 
       The route `/ivr/menu` handles processing the caller's input.
 
-      If our caller chooses '1' for directions, we use method defined
-      below, [`giveExtractionPointInstructions`](//github.com/TwilioDevEd/ivr-phone-tree-node/blob/c0b1beaa37a962550b8b7c0586b7f52a67b02e00/routes/ivr.js#L51-L63),
+      If our caller chooses '1' for directions, we call [`giveExtractionPointInstructions`](//github.com/TwilioDevEd/ivr-phone-tree-node/blob/c0b1beaa37a962550b8b7c0586b7f52a67b02e00/routes/ivr.js#L51-L63),
       to respond with TwiML that will
       [`Say`](https://www.twilio.com/docs/api/twiml/say) directions to our
       caller's extraction point.
