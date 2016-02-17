@@ -3,7 +3,9 @@
 [![Build Status](https://travis-ci.org/TwilioDevEd/ivr-phone-tree-node.svg)](https://travis-ci.org/TwilioDevEd/ivr-phone-tree-node)
 
 An example application implementing an automated phone line using 
-Node.js and [Express](http://expressjs.com/en/index.html) web framework
+Node.js and [Express](http://expressjs.com/en/index.html) web framework.
+
+[Read the full tutorial here](https://www.twilio.com/docs/tutorials/walkthrough/ivr-phone-tree/node/express)!
 
 ## Local development
 
