@@ -17,8 +17,7 @@ modeled after a typical call center experience, but with more <a href="https://e
 Terrestrial">Reese&#39;s
 Pieces</a>.</p>
 <p>Stranded aliens can call a phone number and receive instructions on how
-to get out of earth safely, or call their home planet
-directly<a href="http://bit.ly/asogi">.</a> In this tutorial, we&#39;ll show you the
+to get out of earth safely, or call their <a href="http://bit.ly/asogi">home planet</a> directly. In this tutorial, we&#39;ll show you the
 key bits of code to make this work.</p>
 <p>To run this sample app yourself, <a href="https://github.com/TwilioDevEd/ivr-phone-tree-
 node">download the code and follow the
@@ -58,15 +57,6 @@ in response to the message.</p>
 <a href="https://www.twilio.com/docs/api/twiml/gather"><code>Gather</code></a> the input from
 the caller and we <a href="https://www.twilio.com/docs/api/twiml/play"><code>Play</code></a> a
 welcome message.</p>
-<p>You may have noted the second argument we&#39;re passing after the URI segment
-in every route definition, e.g.:</p>
-<pre><code>router.post(&#39;/welcome&#39;, twilio.webhook({validate: false}), function (request, response) {
-    ...
-});
-</code></pre><p>That <code>twilio.webhook({validate: false})</code> call refers to <a href="//www.twilio.com/blog/2014/01/secure-your-nodejs-webhooks-with-middleware-for-express-middleware.html">Twilio module’s built-in
-Express middleware</a>
-, which makes slightly nicer to send back TwiML among other
-purposes, such as Twilio request validation.</p>
 <hr>
 <p><strong>See Also:</strong></p>
 <ul>
@@ -74,9 +64,9 @@ purposes, such as Twilio request validation.</p>
 <li><a href="https://www.twilio.com/docs/api/twiml/play#attributes-loop">Play &#39;loop&#39; attribute</a></li>
 <li><a href="http://expressjs.com/en/guide/using-middleware.html#middleware.router">Using Express middleware</a></li>
 </ul>
-</div><div data-title="Gather user input" data-file="routes/ivr.js" data-highlight="8-14" class="step"><h2 id="where-to-send-the-caller-s-input">Where to send the caller&#39;s input</h2>
+</div><div data-title="Gather user input" data-file="routes/ivr.js" data-highlight="6-16" class="step"><h2 id="where-to-send-the-caller-s-input">Where to send the caller&#39;s input</h2>
 <p>The <em>gather&#39;s</em> <code>action</code> parameter takes an absolute or relative URL as a
-value - in our case, the <code>menu</code> endpoint.</p>
+value - in our case, the <code>/ivr/menu</code> route.</p>
 <p>When the caller has finished entering digits Twilio will make a
 GET or POST request to this URL including a
 <a href="https://www.twilio.com/docs/api/twiml/gather#attributes-action-parameters"><code>Digits</code></a> parameter with the number our caller chose.</p>
@@ -89,16 +79,15 @@ are unreachable, unless the caller enters no digits.</p>
 <li><a href="https://www.twilio.com/docs/api/twiml/twilio_request#synchronous-request-parameters">Twilio Request parameters</a></li>
 </ul>
 </div><div data-title="IVR Menu" data-file="routes/ivr.js" data-highlight="18-32, 51-77" class="step"><h2 id="the-main-menu-process-the-caller-s-selection">The Main Menu: Process the caller&#39;s selection</h2>
-<p>The route <code>/ivr/menu</code> handles processing the caller&#39;s input.</p>
-<p>If our caller chooses &#39;1&#39; for directions, we use method defined
-below, <a href="//github.com/TwilioDevEd/ivr-phone-tree-node/blob/c0b1beaa37a962550b8b7c0586b7f52a67b02e00/routes/ivr.js#L51-L63"><code>giveExtractionPointInstructions</code></a>,
-to respond with TwiML that will
-<a href="https://www.twilio.com/docs/api/twiml/say"><code>Say</code></a> directions to our
+<p>This route handles processing the caller&#39;s input.</p>
+<p>If our caller chooses &#39;1&#39; for directions, we use a helper method defined
+below, <code>giveExtractionPointInstructions</code>, to respond with TwiML that will
+<a href="//www.twilio.com/docs/api/twiml/say"><code>Say</code></a> directions to our
 caller&#39;s extraction point.</p>
 <p>If the caller chooses &#39;2&#39; to call her home planet, then we need to
-gather more input from her. We wrote another method to handle this,
-<a href="//github.com/TwilioDevEd/ivr-phone-tree-node/blob/c0b1beaa37a962550b8b7c0586b7f52a67b02e00/routes/ivr.js#L65-L77"><code>listPlanets</code></a>,
-which we&#39;ll cover in the next step.</p>
+gather more input from her. We&#39;ll cover this in the next step.</p>
+<p>If the caller enters anything else we respond with a TwiML
+<a href="//www.twilio.com/docs/api/twiml/redirect"><code>Redirect</code></a> to the main menu.</p>
 <p>If the caller enters anything else we respond with a TwiML
 <a href="https://www.twilio.com/docs/api/twiml/redirect"><code>Redirect</code></a> to the main
 menu.</p>
@@ -108,16 +97,14 @@ menu.</p>
 <li><a href="https://www.twilio.com/docs/api/twiml/hangup">The TwiML Hangup verb</a></li>
 <li><a href="https://www.twilio.com/docs/api/twiml/say#attributes-alice">TwiMl Say: Language Options</a></li>
 </ul>
-</div><div data-title="The Planet Directory" data-file="routes/ivr.js" data-highlight="34-49" class="step"><h2 id="the-planet-directory-collect-more-input-from-the-user">The Planet Directory: Collect more input from the user</h2>
-<p>If our caller chooses to call her home planet we will tell her the planet
-directory. This is akin to a typical &quot;company directory&quot; feature of
-most IVRs.</p>
-<p>In our TwiML response we again use a <code>Gather</code> verb to receive our caller&#39;s
-input. The <code>action</code> verb points this time to the <code>planets</code> route, which
-will switch our response based on what the caller chooses.</p>
-<p>The TwiML response we return for that route just uses a
-<a href="https://www.twilio.com/docs/api/twiml/dial"><code>Dial</code></a> verb with the
-appropriate phone number to connect our caller to her home planet.</p>
+</div><div data-title="The Planet Directory" data-file="routes/ivr.js" data-highlight="34-49" class="step"><h2 id="the-planet-directory-connect-the-caller-to-another-number">The Planet Directory: Connect the caller to another number</h2>
+<p>In this servlet, we grab the caller&#39;s selection from the request and store
+it in a variable called <code>selectedOption</code>. We then use a
+<a href="https://www.twilio.com/docs/api/twiml/dial"><code>Dial</code></a> verb with
+the appropriate phone number to connect our caller to her home
+planet.</p>
+<p>The current numbers are hardcoded, but they could also be
+read from a database or from a file.</p>
 </div><div class="step"><h2 id="where-to-next-">Where to next?</h2>
 <p>That&#39;s it! We&#39;ve just implemented an IVR phone tree that will delight
 and serve your customers.</p>
@@ -130,7 +117,7 @@ you might want to check out these other tutorials:</p>
 <h3 id="did-this-help-">Did this help?</h3>
 <p>Thanks for checking out this tutorial! If you have any feedback to share
 with us, we&#39;d love to hear it. Tweet
-<a href="http://twitter.com/twilio">@twilio</a> to let us know what you think.</p>
+<a href="//twitter.com/twilio">@twilio</a> to let us know what you think.</p>
 </div></div>
 <div class="saurus-files" style="display:none;"><textarea class="saurus-file" data-file="app.js" data-mode="javascript">77u/dmFyIGV4cHJlc3MgPSByZXF1aXJlKCdleHByZXNzJyk7CnZhciBwYXRoID0gcmVxdWlyZSgncGF0aCcpOwp2YXIgZmF2aWNvbiA9IHJlcXVpcmUoJ3NlcnZlLWZhdmljb24nKTsKdmFyIGxvZ2dlciA9IHJlcXVpcmUoJ21vcmdhbicpOwp2YXIgY29va2llUGFyc2VyID0gcmVxdWlyZSgnY29va2llLXBhcnNlcicpOwp2YXIgYm9keVBhcnNlciA9IHJlcXVpcmUoJ2JvZHktcGFyc2VyJyk7Cgp2YXIgaW5kZXggPSByZXF1aXJlKCcuL3JvdXRlcy9pbmRleCcpOwp2YXIgaXZyID0gcmVxdWlyZSgnLi9yb3V0ZXMvaXZyJyk7Cgp2YXIgYXBwID0gZXhwcmVzcygpOwoKLy8gdmlldyBlbmdpbmUgc2V0dXAKYXBwLnNldCgndmlld3MnLCBwYXRoLmpvaW4oX19kaXJuYW1lLCAndmlld3MnKSk7CmFwcC5zZXQoJ3ZpZXcgZW5naW5lJywgJ2phZGUnKTsKCi8vIHVuY29tbWVudCBhZnRlciBwbGFjaW5nIHlvdXIgZmF2aWNvbiBpbiAvcHVibGljCi8vYXBwLnVzZShmYXZpY29uKF9fZGlybmFtZSArICcvcHVibGljL2Zhdmljb24uaWNvJykpOwphcHAudXNlKGxvZ2dlcignZGV2JykpOwphcHAudXNlKGJvZHlQYXJzZXIuanNvbigpKTsKYXBwLnVzZShib2R5UGFyc2VyLnVybGVuY29kZWQoe2V4dGVuZGVkOiBmYWxzZX0pKTsKYXBwLnVzZShjb29raWVQYXJzZXIoKSk7CmFwcC51c2UocmVxdWlyZSgnc3R5bHVzJykubWlkZGxld2FyZShwYXRoLmpvaW4oX19kaXJuYW1lLCAncHVibGljJykpKTsKYXBwLnVzZShleHByZXNzLnN0YXRpYyhwYXRoLmpvaW4oX19kaXJuYW1lLCAncHVibGljJykpKTsKCmFwcC51c2UoJy8nLCBpbmRleCk7CmFwcC51c2UoJy9pdnInLCBpdnIpOwoKLy8gY2F0Y2ggNDA0IGFuZCBmb3J3YXJkIHRvIGVycm9yIGhhbmRsZXIKYXBwLnVzZShmdW5jdGlvbiAocmVxLCByZXMsIG5leHQpIHsKICAgIHZhciBlcnIgPSBuZXcgRXJyb3IoJ05vdCBGb3VuZCcpOwogICAgZXJyLnN0YXR1cyA9IDQwNDsKICAgIG5leHQoZXJyKTsKfSk7CgovLyBlcnJvciBoYW5kbGVycwoKLy8gZGV2ZWxvcG1lbnQgZXJyb3IgaGFuZGxlcgovLyB3aWxsIHByaW50IHN0YWNrdHJhY2UKaWYgKGFwcC5nZXQoJ2VudicpID09PSAnZGV2ZWxvcG1lbnQnKSB7CiAgICBhcHAudXNlKGZ1bmN0aW9uIChlcnIsIHJlcSwgcmVzLCBuZXh0KSB7CiAgICAgICAgcmVzLnN0YXR1cyhlcnIuc3RhdHVzIHx8IDUwMCk7CiAgICAgICAgcmVzLnJlbmRlcignZXJyb3InLCB7CiAgICAgICAgICAgIG1lc3NhZ2U6IGVyci5tZXNzYWdlLAogICAgICAgICAgICBlcnJvcjogZXJyCiAgICAgICAgfSk7CiAgICB9KTsKfQoKLy8gcHJvZHVjdGlvbiBlcnJvciBoYW5kbGVyCi8vIG5vIHN0YWNrdHJhY2VzIGxlYWtlZCB0byB1c2VyCmFwcC51c2UoZnVuY3Rpb24gKGVyciwgcmVxLCByZXMsIG5leHQpIHsKICAgIHJlcy5zdGF0dXMoZXJyLnN0YXR1cyB8fCA1MDApOwogICAgcmVzLnJlbmRlcignZXJyb3InLCB7CiAgICAgICAgbWVzc2FnZTogZXJyLm1lc3NhZ2UsCiAgICAgICAgZXJyb3I6IHt9CiAgICB9KTsKfSk7CgoKbW9kdWxlLmV4cG9ydHMgPSBhcHA7</textarea>
 <textarea class="saurus-file" data-file="routes/ivr.js" data-mode="javascript">77u/dmFyIGV4cHJlc3MgPSByZXF1aXJlKCdleHByZXNzJyk7DXZhciByb3V0ZXIgPSBleHByZXNzLlJvdXRlcigpOw12YXIgdHdpbGlvID0gcmVxdWlyZSgndHdpbGlvJyk7DQ0vLyBQT1NUOiAnL2l2ci93ZWxjb21lJw1yb3V0ZXIucG9zdCgnL3dlbGNvbWUnLCB0d2lsaW8ud2ViaG9vayh7dmFsaWRhdGU6IGZhbHNlfSksIGZ1bmN0aW9uIChyZXF1ZXN0LCByZXNwb25zZSkgew0gICAgdmFyIHR3aW1sID0gbmV3IHR3aWxpby5Ud2ltbFJlc3BvbnNlKCk7DSAgICB0d2ltbC5nYXRoZXIoew0gICAgICAgIGFjdGlvbjogIi9pdnIvbWVudSIsDSAgICAgICAgbnVtRGlnaXRzOiAiMSIsDSAgICAgICAgbWV0aG9kOiAiUE9TVCINICAgIH0sIGZ1bmN0aW9uIChub2RlKSB7DSAgICAgICAgbm9kZS5wbGF5KCJodHRwOi8vaG93dG9kb2NzLnMzLmFtYXpvbmF3cy5jb20vZXQtcGhvbmUubXAzIiwge2xvb3A6IDN9KTsNICAgIH0pOw0gICAgcmVzcG9uc2Uuc2VuZCh0d2ltbCk7DX0pOw0NLy8gUE9TVDogJy9pdnIvbWVudScNcm91dGVyLnBvc3QoJy9tZW51JywgdHdpbGlvLndlYmhvb2soe3ZhbGlkYXRlOiBmYWxzZX0pLCBmdW5jdGlvbiAocmVxdWVzdCwgcmVzcG9uc2UpIHsNICAgIHZhciBzZWxlY3RlZE9wdGlvbiA9IHJlcXVlc3QuYm9keS5EaWdpdHM7DSAgICB2YXIgb3B0aW9uQWN0aW9ucyA9IHsNICAgICAgICAiMSI6IGdpdmVFeHRyYWN0aW9uUG9pbnRJbnN0cnVjdGlvbnMsDSAgICAgICAgIjIiOiBsaXN0UGxhbmV0cw0gICAgfTsNDSAgICBpZiAob3B0aW9uQWN0aW9uc1tzZWxlY3RlZE9wdGlvbl0pIHsNICAgICAgICB2YXIgdHdpbWwgPSBuZXcgdHdpbGlvLlR3aW1sUmVzcG9uc2UoKTsNICAgICAgICBvcHRpb25BY3Rpb25zW3NlbGVjdGVkT3B0aW9uXSh0d2ltbCk7DSAgICAgICAgcmVzcG9uc2Uuc2VuZCh0d2ltbCk7DSAgICB9DSAgICByZXNwb25zZS5zZW5kKHJlZGlyZWN0V2VsY29tZSgpKTsNfSk7DQ0vLyBQT1NUOiAnL2l2ci9wbGFuZXRzJw1yb3V0ZXIucG9zdCgnL3BsYW5ldHMnLCB0d2lsaW8ud2ViaG9vayh7dmFsaWRhdGU6IGZhbHNlfSksIGZ1bmN0aW9uIChyZXF1ZXN0LCByZXNwb25zZSkgew0gICAgdmFyIHNlbGVjdGVkT3B0aW9uID0gcmVxdWVzdC5ib2R5LkRpZ2l0czsNICAgIHZhciBvcHRpb25BY3Rpb25zID0gew0gICAgICAgICIyIjogIisxMjAyNDE3MzM3OCIsDSAgICAgICAgIjMiOiAiKzEyMDI3MzM2Mzg2IiwNICAgICAgICAiNCI6ICIrMTIwMjczMzY2MzciDSAgICB9Ow0NICAgIGlmIChvcHRpb25BY3Rpb25zW3NlbGVjdGVkT3B0aW9uXSkgew0gICAgICAgIHZhciB0d2ltbCA9IG5ldyB0d2lsaW8uVHdpbWxSZXNwb25zZSgpOw0gICAgICAgIHR3aW1sLmRpYWwob3B0aW9uQWN0aW9uc1tzZWxlY3RlZE9wdGlvbl0pOw0gICAgICAgIHJlc3BvbnNlLnNlbmQodHdpbWwpOw0gICAgfQ0gICAgcmVzcG9uc2Uuc2VuZChyZWRpcmVjdFdlbGNvbWUoKSk7DX0pOw0NdmFyIGdpdmVFeHRyYWN0aW9uUG9pbnRJbnN0cnVjdGlvbnMgPSBmdW5jdGlvbiAodHdpbWwpIHsNICAgIHR3aW1sLnNheSgiVG8gZ2V0IHRvIHlvdXIgZXh0cmFjdGlvbiBwb2ludCwgZ2V0IG9uIHlvdXIgYmlrZSBhbmQgZ28gZG93biAiICsNICAgICAgICAidGhlIHN0cmVldC4gVGhlbiBMZWZ0IGRvd24gYW4gYWxsZXkuIEF2b2lkIHRoZSBwb2xpY2UgY2Fycy4gVHVybiBsZWZ0ICIgKw0gICAgICAgICJpbnRvIGFuIHVuZmluaXNoZWQgaG91c2luZyBkZXZlbG9wbWVudC4gRmx5IG92ZXIgdGhlIHJvYWRibG9jay4gR28gIiArDSAgICAgICAgInBhc3NlZCB0aGUgbW9vbi4gU29vbiBhZnRlciB5b3Ugd2lsbCBzZWUgeW91ciBtb3RoZXIgc2hpcC4iLA0gICAgICAgIHt2b2ljZTogImFsaWNlIiwgbGFuZ3VhZ2U6ICJlbi1HQiJ9KTsNDSAgICB0d2ltbC5zYXkoIlRoYW5rIHlvdSBmb3IgY2FsbGluZyB0aGUgRVQgUGhvbmUgSG9tZSBTZXJ2aWNlIC0gdGhlICIgKw0gICAgICAgICJhZHZlbnR1cm91cyBhbGllbidzIGZpcnN0IGNob2ljZSBpbiBpbnRlcmdhbGFjdGljIHRyYXZlbCIpOw0NICAgIHR3aW1sLmhhbmd1cCgpOw0gICAgcmV0dXJuIHR3aW1sOw19Ow0NdmFyIGxpc3RQbGFuZXRzID0gZnVuY3Rpb24gKHR3aW1sKSB7DSAgICB0d2ltbC5nYXRoZXIoew0gICAgICAgIGFjdGlvbjogIi9pdnIvcGxhbmV0cyIsDSAgICAgICAgbnVtRGlnaXRzOiAiMSIsDSAgICAgICAgbWV0aG9kOiAiUE9TVCINICAgIH0sIGZ1bmN0aW9uIChub2RlKSB7DSAgICAgICAgbm9kZS5zYXkoIlRvIGNhbGwgdGhlIHBsYW5ldCBCcm9oIGRvZSBBcyBPIEcsIHByZXNzIDIuIFRvIGNhbGwgdGhlIHBsYW5ldCAiICsNICAgICAgICAgICAgIkR1aEdvIGJhaCwgcHJlc3MgMy4gVG8gY2FsbCBhbiBvb2JlciBhc3Rlcm9pZCB0byB5b3VyIGxvY2F0aW9uLCBwcmVzcyA0LiBUbyAiICsNICAgICAgICAgICAgImdvIGJhY2sgdG8gdGhlIG1haW4gbWVudSwgcHJlc3MgdGhlIHN0YXIga2V5ICIsDSAgICAgICAgICAgIHt2b2ljZTogImFsaWNlIiwgbGFuZ3VhZ2U6ICJlbi1HQiIsIGxvb3A6IDN9KTsNICAgIH0pOw0gICAgcmV0dXJuIHR3aW1sOw19Ow0NdmFyIHJlZGlyZWN0V2VsY29tZSA9IGZ1bmN0aW9uICgpIHsNICAgIHZhciB0d2ltbCA9IG5ldyB0d2lsaW8uVHdpbWxSZXNwb25zZSgpOw0gICAgdHdpbWwuc2F5KCJSZXR1cm5pbmcgdG8gdGhlIG1haW4gbWVudSIsIHt2b2ljZTogImFsaWNlIiwgbGFuZ3VhZ2U6ICJlbi1HQiJ9KTsNICAgIHR3aW1sLnJlZGlyZWN0KCIvaXZyL3dlbGNvbWUiKTsNICAgIHJldHVybiB0d2ltbDsNfTsNDQ1tb2R1bGUuZXhwb3J0cyA9IHJvdXRlcjs=</textarea>
