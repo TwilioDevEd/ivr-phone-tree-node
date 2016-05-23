@@ -1,7 +1,7 @@
 .chapter(data-title='IVR Phone Tree')
-  .step(data-title='Introduction', data-file='app.js')
+  .step(data-title='About This Application', data-file='app.js')
     :markdown
-      ## About this application
+      ## About This Application
 
       ![Extra Terrestrial Phone Home
       Service](http://howtodocs.s3.amazonaws.com/logo-et-phone2.png)
@@ -12,8 +12,8 @@
       Terrestrial).
 
       Stranded aliens can call a phone number and receive instructions on how
-      to get out of earth safely, or call their [home planet](http://bit.ly/asogi) directly. In this tutorial, we'll show you the
-      key bits of code to make this work.
+      to get out of earth safely, or call their [home planet](http://bit.ly/asogi)
+      directly. On this tutorial, we'll show you the key bits of code to make this work.
 
       To run this sample app yourself, [download the code and follow the
       instructions on GitHub](https://github.com/TwilioDevEd/ivr-phone-tree-
@@ -31,9 +31,9 @@
       * [TwiML Creation with Twilio-Node helper library](//twilio.github.io/twilio-node/#twimlBasic)
 
 
-  .step(data-title='Respond a Phone Call', data-file='app.js')
+  .step(data-title='Responding a Phone Call', data-file='app.js')
     :markdown
-      ## Respond to the Phone Call
+      ## Responding a Phone Call
 
       To initiate the phone tree, we need to configure one of our Twilio
       numbers to send our web application an HTTP request when we
@@ -53,9 +53,9 @@
       * [Using ngrok to test your Twilio webhooks locally](https://www.twilio.com/blog/2013/10/test-your-webhooks-locally-with-ngrok.html)
 
 
-  .step(data-title='Respond to Twilio request', data-file='routes/ivr.js')
+  .step(data-title='Responding to the Twilio Request With TwiML', data-file='routes/ivr.js')
     :markdown
-      ## Respond to the Twilio request with TwiML
+      ## Responding to the Twilio Request With TwiML
 
       Our Twilio number is now configured to [send HTTP
       requests](https://www.twilio.com/docs/api/twiml/twilio_request) to this
@@ -63,9 +63,8 @@
       [TwiML](https://www.twilio.com/docs/api/twiml) to tell Twilio what to do
       in response to the message.
 
-      In this case we tell Twilio to
-      [`Gather`](https://www.twilio.com/docs/api/twiml/gather) the input from
-      the caller and we [`Play`](https://www.twilio.com/docs/api/twiml/play) a
+      In this case we tell Twilio to [`Gather`](https://www.twilio.com/docs/api/twiml/gather)
+      the input from the caller and we [`Play`](https://www.twilio.com/docs/api/twiml/play) a
       welcome message.
 
       ---
@@ -75,9 +74,9 @@
       * [Play 'loop' attribute](https://www.twilio.com/docs/api/twiml/play#attributes-loop)
       * [Using Express middleware](http://expressjs.com/en/guide/using-middleware.html#middleware.router)
 
-  .step(data-title="Gather user input", data-file='routes/ivr.js', data-highlight='6-16')
+  .step(data-title="Where to Send the Caller's Input", data-file='routes/ivr.js', data-highlight='6-16')
     :markdown
-      ## Where to send the caller's input
+      ## Where to Send the Caller's Input
 
       The *gather's* `action` parameter takes an absolute or relative URL as a
       value - in our case, the `/ivr/menu` route.
@@ -96,9 +95,9 @@
       * [Twilio Request parameters](https://www.twilio.com/docs/api/twiml/twilio_request#synchronous-request-parameters)
 
 
-  .step(data-title='IVR Menu', data-file='routes/ivr.js', data-highlight='18-32, 51-77')
+  .step(data-title='The Main Menu', data-file='routes/ivr.js', data-highlight='18-32, 51-77')
     :markdown
-      ## The Main Menu: Process the caller's selection
+      ## The Main Menu: Processing the Caller's Selection
 
       This route handles processing the caller's input.
 
@@ -124,9 +123,9 @@
       * [TwiMl Say: Language Options](https://www.twilio.com/docs/api/twiml/say#attributes-alice)
 
 
-  .step(data-title='The Planet Directory', data-file='routes/ivr.js', data-highlight='34-49')
+  .step(data-title="The Planet's Directory", data-file='routes/ivr.js', data-highlight='34-49')
     :markdown
-      ## The Planet Directory: Connect the caller to another number
+      ## The Planet's Directory: Connect the Caller to Another Number
 
       In this servlet, we grab the caller's selection from the request and store
       it in a variable called `selectedOption`. We then use a
@@ -139,7 +138,7 @@
 
   .step
     :markdown
-      ## Where to next?
+      ## Where to Next?
 
       That's it! We've just implemented an IVR phone tree that will delight
       and serve your customers.
@@ -157,6 +156,5 @@
 
       ### Did this help?
 
-      Thanks for checking out this tutorial! If you have any feedback to share
-      with us, we'd love to hear it. Tweet
-      [@twilio](//twitter.com/twilio) to let us know what you think.
+      Thanks for checking this tutorial out! If you have any feedback to share
+      with us, we'd love to hear it. [Contact the Twilio Developer Education Team](mailto:deved-oss@twilio.com) to let us know what you think.
