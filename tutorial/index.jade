@@ -1,7 +1,7 @@
 .chapter(data-title='IVR Phone Tree')
-  .step(data-title='Introduction', data-file='app.js')
+  .step(data-title='About This Application', data-file='app.js')
     :markdown
-      ## About this application
+      ## About This Application
 
       ![Extra Terrestrial Phone Home
       Service](http://howtodocs.s3.amazonaws.com/logo-et-phone2.png)
@@ -33,7 +33,7 @@
 
   .step(data-title='Responding a Phone Call', data-file='app.js')
     :markdown
-      ## Responding to the Phone Call
+      ## Responding a Phone Call
 
       To initiate the phone tree, we need to configure one of our Twilio
       numbers to send our web application an HTTP request when we
@@ -53,9 +53,9 @@
       * [Using ngrok to test your Twilio webhooks locally](https://www.twilio.com/blog/2013/10/test-your-webhooks-locally-with-ngrok.html)
 
 
-  .step(data-title='Responding to Twilio request', data-file='routes/ivr.js')
+  .step(data-title='Responding to the Twilio Request With TwiML', data-file='routes/ivr.js')
     :markdown
-      ## Responding to the Twilio request with TwiML
+      ## Responding to the Twilio Request With TwiML
 
       Our Twilio number is now configured to [send HTTP
       requests](https://www.twilio.com/docs/api/twiml/twilio_request) to this
@@ -74,9 +74,9 @@
       * [Play 'loop' attribute](https://www.twilio.com/docs/api/twiml/play#attributes-loop)
       * [Using Express middleware](http://expressjs.com/en/guide/using-middleware.html#middleware.router)
 
-  .step(data-title="Where to send the caller's input", data-file='routes/ivr.js', data-highlight='6-16')
+  .step(data-title="Where to Send the Caller's Input", data-file='routes/ivr.js', data-highlight='6-16')
     :markdown
-      ## Where to send the caller's input
+      ## Where to Send the Caller's Input
 
       The *gather's* `action` parameter takes an absolute or relative URL as a
       value - in our case, the `/ivr/menu` route.
@@ -97,7 +97,7 @@
 
   .step(data-title='The Main Menu', data-file='routes/ivr.js', data-highlight='18-32, 51-77')
     :markdown
-      ## The Main Menu: Processing the caller's selection
+      ## The Main Menu: Processing the Caller's Selection
 
       This route handles processing the caller's input.
 
@@ -125,7 +125,7 @@
 
   .step(data-title="The Planet's Directory", data-file='routes/ivr.js', data-highlight='34-49')
     :markdown
-      ## The Planet's Directory: Connect the caller to another number
+      ## The Planet's Directory: Connect the Caller to Another Number
 
       In this servlet, we grab the caller's selection from the request and store
       it in a variable called `selectedOption`. We then use a
@@ -138,7 +138,7 @@
 
   .step
     :markdown
-      ## Where to next?
+      ## Where to Next?
 
       That's it! We've just implemented an IVR phone tree that will delight
       and serve your customers.
