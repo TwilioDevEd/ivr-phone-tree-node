@@ -1,56 +1,63 @@
-﻿# IVR Phone Tree: IVR for beginners. Powered by Twilio - Node.js/Express
+﻿<a href="https://www.twilio.com">
+  <img src="https://static0.twilio.com/marketing/bundles/marketing/img/logos/wordmark-red.svg" alt="Twilio" width="250" />
+</a>
+
+# IVR Phone Tree: IVR for beginners. Powered by Twilio - Node.js/Express
 
 [![Build Status](https://travis-ci.org/TwilioDevEd/ivr-phone-tree-node.svg)](https://travis-ci.org/TwilioDevEd/ivr-phone-tree-node)
 
-An example application implementing an automated phone line using
-Node.js and [Express](http://expressjs.com/en/index.html) web framework.
+Create a seamless customer service experience by building an IVR Phone Tree for your company. IVR systems allow your customers to access the people and information they need.
 
-[Read the full tutorial here](https://www.twilio.com/docs/tutorials/walkthrough/ivr-phone-tree/node/express)!
+[Read the full tutorial here!](https://www.twilio.com/docs/tutorials/walkthrough/ivr-phone-tree/node/express)
 
-## Local development
+## Local Development
 
-First you need to install either [Node.js](http://nodejs.org/) or [io.js](https://iojs.org/en/index.html), both of which
-should also install [npm](https://www.npmjs.com/).
+This project is build using [Express](http://expressjs.com/) web framework and
+depends on [MongoDB](https://www.mongodb.com).
 
-1. To run the app locally, clone this repository and `cd` into it.
 
+1. First clone this repository and `cd` into it.
+
+   ```bash
+   $ git clone git@github.com:TwilioDevEd/ivr-phone-tree-node.git
+   $ cd ivr-phone-tree-node
+   ```
 1. Install project's dependencies.
 
-    ```
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
+
+1. Make sure the tests succeed.
+
+   ```bash
+   $ npm test
+   ```
 
 1. Start the development server.
 
-    ```
-    node .
-    ```
-    Alternatively you might also consider using [nodemon](https://github.com/remy/nodemon) for this. It works just like
-    the node command, but automatically restarts your application when you change any source code files.
+   ```bash
+   $ npm start
+   ```
 
-    ```
-    npm install -g nodemon
-    nodemon .
-    ```
+   Alternatively you might also consider using [nodemon](https://github.com/remy/nodemon) for this. It works just like
+   the node command, but automatically restarts your application when you change any source code files.
+
+   ```bash
+   $ npm install -g nodemon
+   $ nodemon .
+   ```
+
+1. Check it out at [http://localhost:3000](http://localhost:3000).
 
 1. Expose the application to the wider Internet using [ngrok](https://ngrok.com/).
 
-    ```
-    ngrok http 3000 -host-header="localhost:3000"
-    ```
+   ```bash
+   $ ngrok http 3000
+   ```
 
-1. Provision a number under the [Twilio's Manage Numbers](https://www.twilio.com/user/account/phone-numbers/incoming)
+1. Provision a number under the [Twilio's Manage Numbers](https://www.twilio.com/console/phone-numbers/incoming)
    page on your account. Set the voice URL for the number to http://[your-ngrok-subdomain].ngrok.io/ivr/welcome
-
-That's it!
-
-## Run the tests
-
-You can run the tests locally by typing
-
-```
-npm test
-```
 
 ## Meta
 
