@@ -1,18 +1,18 @@
 ﻿var express = require('express');
 var router = express.Router();
 var twilio = require('twilio');
+var VoiceResponse = require('twilio/lib/twiml/VoiceResponse');
 
 // POST: '/ivr/welcome'
 router.post('/welcome', twilio.webhook({validate: false}), function (request, response) {
-    var twiml = new twilio.TwimlResponse();
-    twiml.gather({
+    var voiceResponse = new VoiceResponse();
+    var gather = voiceResponse.gather({
         action: "/ivr/menu",
         numDigits: "1",
         method: "POST"
-    }, function (node) {
-        node.play("http://howtodocs.s3.amazonaws.com/et-phone.mp3", {loop: 3});
     });
-    response.send(twiml);
+    gather.play({loop: 3}, "http://howtodocs.s3.amazonaws.com/et-phone.mp3");
+    response.send(voiceResponse.toString());
 });
 
 // POST: '/ivr/menu'
@@ -24,12 +24,12 @@ router.post('/menu', twilio.webhook({validate: false}), function (request, respo
     };
 
     if (optionActions[selectedOption]) {
-        var twiml = new twilio.TwimlResponse();
+        var twiml = new VoiceResponse();
         optionActions[selectedOption](twiml);
-        response.send(twiml);
+        response.send(twiml.toString());
     }
     else {
-        response.send(redirectWelcome());
+        response.send(redirectWelcome().toString());
     }
 });
 
@@ -43,12 +43,12 @@ router.post('/planets', twilio.webhook({validate: false}), function (request, re
     };
 
     if (optionActions[selectedOption]) {
-        var twiml = new twilio.TwimlResponse();
+        var twiml = new VoiceResponse();
         twiml.dial(optionActions[selectedOption]);
-        response.send(twiml);
+        response.send(twiml.toString());
     }
     else {
-        response.send(redirectWelcome());
+        response.send(redirectWelcome().toString());
     }
 });
 
@@ -67,21 +67,20 @@ var giveExtractionPointInstructions = function (twiml) {
 };
 
 var listPlanets = function (twiml) {
-    twiml.gather({
+    var gather = twiml.gather({
         action: "/ivr/planets",
         numDigits: "1",
         method: "POST"
-    }, function (node) {
-        node.say("To call the planet Broh doe As O G, press 2. To call the planet " +
-            "DuhGo bah, press 3. To call an oober asteroid to your location, press 4. To " +
-            "go back to the main menu, press the star key ",
-            {voice: "alice", language: "en-GB", loop: 3});
     });
+    gather.say("To call the planet Broh doe As O G, press 2. To call the planet " +
+               "DuhGo bah, press 3. To call an oober asteroid to your location, press 4. To " +
+               "go back to the main menu, press the star key ",
+               {voice: "alice", language: "en-GB", loop: 3});
     return twiml;
 };
 
 var redirectWelcome = function () {
-    var twiml = new twilio.TwimlResponse();
+    var twiml = new VoiceResponse();
     twiml.say("Returning to the main menu", {voice: "alice", language: "en-GB"});
     twiml.redirect("/ivr/welcome");
     return twiml;

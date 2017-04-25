@@ -33,7 +33,7 @@
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.2",
     "stylus": "0.54.5",
-    "twilio": "3.0.0-rc.13"
+    "twilio": "3.0.0-rc.16"
   },
   "devDependencies": {
     "chai": "^3.5.0",
