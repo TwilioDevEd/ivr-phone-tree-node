@@ -2,7 +2,7 @@ const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 exports.welcome = function welcome() {
   const voiceResponse = new VoiceResponse();
-  const bodyUrl = 'http://howtodocs.s3.amazonaws.com/et-phone.mp3';
+  const bodyUrl = 'https://raw.githubusercontent.com/TwilioDevEd/ivr-phone-tree-servlets/master/et-phone.mp3';
 
   const gather = voiceResponse.gather({
     action: '/ivr/menu',
