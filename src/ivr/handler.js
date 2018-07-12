@@ -2,7 +2,6 @@ const VoiceResponse = require('twilio').twiml.VoiceResponse;
 
 exports.welcome = function welcome() {
   const voiceResponse = new VoiceResponse();
-  const bodyUrl = 'https://raw.githubusercontent.com/TwilioDevEd/ivr-phone-tree-servlets/master/et-phone.mp3';
 
   const gather = voiceResponse.gather({
     action: '/ivr/menu',
@@ -10,7 +9,11 @@ exports.welcome = function welcome() {
     method: 'POST',
   });
 
-  gather.play({loop: 3}, bodyUrl);
+  gather.say(
+    'Thanks for calling the E T Phone Home Service. Please press 1 for directions. ' +
+    'Press 2 for a list of planets to call.',
+    {loop: 3}
+  );
 
   return voiceResponse.toString();
 };
