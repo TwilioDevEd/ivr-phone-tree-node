@@ -1,7 +1,5 @@
 const {welcome, menu, planets} = require('../../src/ivr/handler');
 
-const bodyUrl = 'http://howtodocs.s3.amazonaws.com/et-phone.mp3';
-
 describe('IvrHandler#Welcome', () => {
   it('should serve TwiML with gather', () => {
     const twiml = welcome();
@@ -9,7 +7,7 @@ describe('IvrHandler#Welcome', () => {
 
     // TwiML verbs
     expect(count('Gather')).toBe(2);
-    expect(count('Play')).toBe(2);
+    expect(count('Say')).toBe(2);
 
     // TwiML options
     expect(twiml).toContain('action="/ivr/menu"');
@@ -17,7 +15,7 @@ describe('IvrHandler#Welcome', () => {
     expect(twiml).toContain('loop="3"');
 
     // TwiML content
-    expect(twiml).toContain(bodyUrl);
+    expect(twiml).toContain('Thanks for calling the E T Phone Home Service.');
   });
 });
 
