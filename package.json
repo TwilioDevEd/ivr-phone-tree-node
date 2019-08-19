@@ -39,7 +39,7 @@
   },
   "devDependencies": {
     "eslint": "^3.19.0",
-    "eslint-config-google": "^0.7.1",
+    "eslint-config-google": "^0.8.1",
     "jest": "^19.0.2"
   }
 }
