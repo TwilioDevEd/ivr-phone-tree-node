@@ -4,7 +4,7 @@
 
 # IVR Phone Tree: IVR for beginners. Powered by Twilio - Node.js/Express
 
-[![Build Status](https://travis-ci.org/TwilioDevEd/ivr-phone-tree-node.svg)](https://travis-ci.org/TwilioDevEd/ivr-phone-tree-node)
+[![Node.js CI](https://github.com/TwilioDevEd/ivr-phone-tree-node/actions/workflows/node.js.yml/badge.svg)](https://github.com/TwilioDevEd/ivr-phone-tree-node/actions/workflows/node.js.yml)
 
 Create a seamless customer service experience by building an IVR Phone Tree for your company. IVR systems allow your customers to access the people and information they need.
 
