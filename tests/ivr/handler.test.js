@@ -94,7 +94,7 @@ describe('IvrHandler#Planets', () => {
     expect(twiml).toContain('Dial');
 
     // TwiML content
-    expect(twiml).toContain('+12027336637');
+    expect(twiml).toContain('+16513582243');
   });
 });
 

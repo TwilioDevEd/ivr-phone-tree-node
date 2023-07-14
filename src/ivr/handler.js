@@ -58,7 +58,7 @@ function giveExtractionPointInstructions() {
     'the street. Then Left down an alley. Avoid the police cars. Turn left ' +
     'into an unfinished housing development. Fly over the roadblock. Go ' +
     'passed the moon. Soon after you will see your mother ship.',
-    {voice: 'alice', language: 'en-GB'}
+    {voice: 'Polly.Amy', language: 'en-GB'}
   );
 
   twiml.say(
@@ -88,7 +88,7 @@ function listPlanets() {
     'To call the planet Broh doe As O G, press 2. To call the planet DuhGo ' +
     'bah, press 3. To call an oober asteroid to your location, press 4. To ' +
     'go back to the main menu, press the star key ',
-    {voice: 'alice', language: 'en-GB', loop: 3}
+    {voice: 'Polly.Amy', language: 'en-GB', loop: 3}
   );
 
   return twiml.toString();
@@ -102,7 +102,7 @@ function redirectWelcome() {
   const twiml = new VoiceResponse();
 
   twiml.say('Returning to the main menu', {
-    voice: 'alice',
+    voice: 'Polly.Amy',
     language: 'en-GB',
   });
 
