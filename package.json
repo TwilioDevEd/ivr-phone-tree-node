@@ -35,7 +35,7 @@
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.2",
     "stylus": "0.54.5",
-    "twilio": "^3.0.0-rc.17"
+    "twilio": "^4.19.3"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
